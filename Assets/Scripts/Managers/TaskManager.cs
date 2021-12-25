@@ -6,7 +6,6 @@ using UnityEngine;
 public class TaskManager : MonoBehaviour
 {
     public static event Action<int> TaskChanged;
-
     public static TaskManager Inst { get; private set; }
 
     [SerializeField] private List<string> _tasks;
@@ -15,6 +14,7 @@ public class TaskManager : MonoBehaviour
     private int _task = 0;
     private int _iteration = 0;
 
+    public int Iteration { get => _iteration; }
     public int TaskId
     {
         get => _task;
@@ -35,8 +35,24 @@ public class TaskManager : MonoBehaviour
     public void TaskDone(int id)
     {
         if (TaskId != id) return;
-        ++id;
 
+        if (id == 3 && _iteration < 2) // repeat if needed
+        {
+            _iteration++;
+
+            TaskId = 1;
+            _taskText.text = _tasks[TaskId];
+
+
+            if (id == 2 && _iteration == 3)
+            {
+                TaskId = 4;
+                _taskText.text = _tasks[TaskId];
+            }
+            return;
+        }
+
+        ++id;
         if (_tasks.Count < id + 1) return;
 
         var nextTask = _tasks[id];
@@ -46,13 +62,6 @@ public class TaskManager : MonoBehaviour
 
             _taskText.text = _tasks[id];
         }
-
-        if(id == 3 && _iteration < 5)
-        {
-            _iteration++;
-            TaskId = 1;
-            _taskText.text = _tasks[TaskId];
-        }
     }
 
     public bool CanTaskBeDone(int taskNum)
@@ -60,20 +69,11 @@ public class TaskManager : MonoBehaviour
         return taskNum == TaskId;
     }
 
-    // УДАЛИ ЭТО КОГДА БУДЕШЬ ТАСКИ ДОБАВЛЯТЬ
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.T))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            TaskDone(0);
-        }
-        if (Input.GetKeyDown(KeyCode.Y))
-        {
-            TaskDone(1);
-        }
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            TaskDone(2);
+            TaskDone(3);
         }
     }
 }

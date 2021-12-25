@@ -3,36 +3,35 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public partial class ShopComplexItem : LabItem
+public partial class ShopComplexItem : LabItem, ISaveable
 {
     public static event Action<bool, IInteractable> ShopFocused;
-
-    public static event Action UnselectAll;
-
-    public static event Action SaveState;
-    public static event Action ResetToSavedState;
-    public static event Action Reset;
-
-    public static new ShopComplexItem Inst{ get; private set; }
+    public static event Action<int> CapacityChanged;
+    public static new ShopComplexItem Inst { get; private set; }
 
     private const string message = "Текущее значение: ";
+
+    public event Action SaveState;
+    public event Action ResetToSavedState;
+    public event Action Reset;
+    public event Action UnselectAll;
+
+    [SerializeField] private List<ShopDecadeHandle> _handles;
+    [SerializeField] private TMP_Text _currentValueText;
 
     private bool _isFocused;
     private int _currentValue;
     private int _tempValue;
     private int _currentIndex;
-    [SerializeField] private List<ShopDecadeHandle> _handles;
-    [SerializeField] private TMP_Text _currentValueText;
 
     protected override void Awake()
     {
         base.Awake();
 
-        Inst = this;
+        ShopComplexItem.Inst = this;
         _currentIndex = 0;
         _currentValue = 0;
         UpdateUiOutput();
-
 
         SaveState += () => 
         { 
@@ -98,6 +97,7 @@ public partial class ShopComplexItem : LabItem
         RaiceFocusChanged(false, this);
 
         TaskManager.Inst.TaskDone(1);
+        CapacityChanged?.Invoke(_currentValue);
     }
 
     public override void OnQuit()

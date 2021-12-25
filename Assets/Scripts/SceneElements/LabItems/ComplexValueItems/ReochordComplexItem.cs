@@ -2,18 +2,20 @@ using System;
 using TMPro;
 using UnityEngine;
 
-public class ReochordComplexItem : LabItem
+public class ReochordComplexItem : LabItem, ISaveable
 {
+    public static event Action<bool, IInteractable> ReochordFocused;
+    public static event Action<int, int> LengthChanged;
+    public static new ReochordComplexItem Inst { get; private set; }
+
     private const string l1Message = "L1 = ";
     private const string l2Message = "L2 = ";
     private const string sm = " sm";
     private const int _generalLength = 90;
 
-    public static event Action<bool, IInteractable> ReochordFocused;
-
-    public static event Action SaveState;
-    public static event Action ResetToSavedState;
-    public static event Action Reset;
+    public event Action SaveState;
+    public event Action ResetToSavedState;
+    public event Action Reset;
 
     [SerializeField] private TMP_Text _leftValue;
     [SerializeField] private TMP_Text _rightValue;
@@ -45,7 +47,22 @@ public class ReochordComplexItem : LabItem
             UpdateUiOutput();
         };
     }
+    void Update()
+    {
 
+        if (_isFocused && (Input.GetKeyDown(KeyCode.Comma) || Input.GetKeyDown(KeyCode.LeftArrow)))
+        {
+            OnLeftMove();
+        }
+
+        if (_isFocused && (Input.GetKeyDown(KeyCode.Period) || Input.GetKeyDown(KeyCode.RightArrow)))
+        {
+            OnRightMove();
+        }
+    }
+
+
+    #region Public Overriden Methods
     public override void RaiceFocusChanged(bool isFocused, IInteractable target)
     {
         _isFocused = isFocused;
@@ -64,6 +81,7 @@ public class ReochordComplexItem : LabItem
         RaiceFocusChanged(false, this);
 
         TaskManager.Inst.TaskDone(2);
+        LengthChanged?.Invoke(_delta, _generalLength - _delta);
     }
 
     public override void OnQuit()
@@ -72,20 +90,9 @@ public class ReochordComplexItem : LabItem
         base.OnQuit();
     }
 
-    void Update()
-    {
+    #endregion
 
-        if (_isFocused && (Input.GetKeyDown(KeyCode.Comma) || Input.GetKeyDown(KeyCode.LeftArrow)))
-        {
-            OnLeftMove();
-        }
-
-        if (_isFocused && (Input.GetKeyDown(KeyCode.Period) || Input.GetKeyDown(KeyCode.RightArrow)))
-        {
-            OnRightMove();
-        }
-    }
-
+    #region Public Methods
 
     public void OnLeftMove()
     {
@@ -106,6 +113,7 @@ public class ReochordComplexItem : LabItem
             UpdateUiOutput();
         }
     }
+    #endregion
 
     #region Private Methods
     private void SetDeltaValue(int value)

@@ -9,6 +9,8 @@ public class InteractionManager : MonoBehaviour
 
     public static InteractionManager Inst { get; private set; }
 
+    [SerializeField] private GameObject _cursor;
+
     private IInteractable _selected;
     private List<IInteractable> _items;
 
@@ -100,5 +102,7 @@ public class InteractionManager : MonoBehaviour
 
         Cursor.lockState = _isMouseLocked ? CursorLockMode.Locked : CursorLockMode.None;
         Cursor.visible = !_isMouseLocked;
+
+        _cursor.SetActive(_isMouseLocked);
     }
 }

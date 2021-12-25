@@ -27,10 +27,10 @@ public class ShopDecadeHandle : MonoBehaviour
         _startColor = _renderer.material.color;
         _startRotation = transform.rotation;
 
-        ShopComplexItem.SaveState += SaveState;
-        ShopComplexItem.ResetToSavedState += ApplySavedState;
-        ShopComplexItem.Reset += ResetChanges;
-        ShopComplexItem.UnselectAll += ClearSelection;
+        ShopComplexItem.Inst.SaveState += SaveState;
+        ShopComplexItem.Inst.ResetToSavedState += ApplySavedState;
+        ShopComplexItem.Inst.Reset += ResetChanges;
+        ShopComplexItem.Inst.UnselectAll += ClearSelection;
     }
 
 
