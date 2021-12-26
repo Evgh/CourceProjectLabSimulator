@@ -91,6 +91,7 @@ public class ReochordComplexItem : LabItem, ISaveable
     public override void OnQuit()
     {
         ResetToSavedState?.Invoke();
+        LengthChanged?.Invoke(_delta, _generalLength - _delta);
         base.OnQuit();
     }
 
@@ -109,6 +110,7 @@ public class ReochordComplexItem : LabItem, ISaveable
                 .SetRelative(true);
 
             _delta--;
+            LengthChanged?.Invoke(_delta, _generalLength - _delta);
             UpdateUiOutput();
         }
     }
@@ -123,6 +125,7 @@ public class ReochordComplexItem : LabItem, ISaveable
                 .SetEase(Ease.Linear)
                 .SetRelative(true);
             _delta++;
+            LengthChanged?.Invoke(_delta, _generalLength - _delta);
             UpdateUiOutput();
         }
     }
