@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using TMPro;
 using UnityEngine;
@@ -9,7 +10,7 @@ public class ReochordComplexItem : LabItem, ISaveable
     public static new ReochordComplexItem Inst { get; private set; }
 
     private const string l1Message = "L1 = ";
-    private const string l2Message = "L2 = ";
+    private const string l2Message = "L - L1 = ";
     private const string sm = " sm";
     private const int _generalLength = 90;
 
@@ -23,6 +24,8 @@ public class ReochordComplexItem : LabItem, ISaveable
     private bool _isFocused;
     private int _delta;
     private int _tempDelta;
+
+    private Tween _moveTween;
 
     protected override void Awake()
     {
@@ -47,15 +50,16 @@ public class ReochordComplexItem : LabItem, ISaveable
             UpdateUiOutput();
         };
     }
+
     void Update()
     {
 
-        if (_isFocused && (Input.GetKeyDown(KeyCode.Comma) || Input.GetKeyDown(KeyCode.LeftArrow)))
+        if (_isFocused && (Input.GetKey(KeyCode.Comma) || Input.GetKey(KeyCode.LeftArrow)))
         {
             OnLeftMove();
         }
 
-        if (_isFocused && (Input.GetKeyDown(KeyCode.Period) || Input.GetKeyDown(KeyCode.RightArrow)))
+        if (_isFocused && (Input.GetKey(KeyCode.Period) || Input.GetKey(KeyCode.RightArrow)))
         {
             OnRightMove();
         }
@@ -96,9 +100,14 @@ public class ReochordComplexItem : LabItem, ISaveable
 
     public void OnLeftMove()
     {
-        if(_delta > 0)
+        if (_delta > 0)
         {
-            _renderer.transform.position += new Vector3((float)-1.24 / 45, 0, 0);
+            //_renderer.transform.position += new Vector3((float)-1.24 / 45, 0, 0);
+            _moveTween?.Complete();
+            _moveTween = transform.DOMove(Vector3.right * ((float)-1.24 / 45f), 0.1f)
+                .SetEase(Ease.Linear)
+                .SetRelative(true);
+
             _delta--;
             UpdateUiOutput();
         }
@@ -106,9 +115,13 @@ public class ReochordComplexItem : LabItem, ISaveable
 
     public void OnRightMove()
     {
-        if(_delta < _generalLength)
+        if (_delta < _generalLength)
         {
-            _renderer.transform.position += new Vector3((float)1.24 / 45, 0, 0);
+            //_renderer.transform.position += new Vector3((float)1.24 / 45, 0, 0);
+            _moveTween?.Complete();
+            _moveTween = transform.DOMove(Vector3.right * ((float)1.24 / 45f), 0.1f)
+                .SetEase(Ease.Linear)
+                .SetRelative(true);
             _delta++;
             UpdateUiOutput();
         }

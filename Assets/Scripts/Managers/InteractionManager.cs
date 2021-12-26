@@ -15,7 +15,6 @@ public class InteractionManager : MonoBehaviour
     private List<IInteractable> _items;
 
     private bool _isFocused;
-    private bool _isMouseLocked = true;
 
     public bool IsFocused
     {
@@ -89,20 +88,5 @@ public class InteractionManager : MonoBehaviour
             IsFocused = false;
             Selected?.OnQuit();
         }
-
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            UpdateMouseLocked();
-        }
-    }
-
-    private void UpdateMouseLocked()
-    {
-        _isMouseLocked = !_isMouseLocked;
-
-        Cursor.lockState = _isMouseLocked ? CursorLockMode.Locked : CursorLockMode.None;
-        Cursor.visible = !_isMouseLocked;
-
-        _cursor.SetActive(_isMouseLocked);
     }
 }

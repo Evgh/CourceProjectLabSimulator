@@ -17,15 +17,14 @@ public class TableManager : MonoBehaviour
     [SerializeField] List<TMP_Text> _c0Inputs;
     [SerializeField] List<TMP_Text> _cXInputs;
 
-    private bool _isTableShown;
-    private int _labCapacity;
+    private bool _isTableShown = false;
+    private int _labCapacity = 6318;
 
     public int CurrentVoltmeterValue { get; set; }
 
     private void Awake()
     {
         Inst = this;
-        _isTableShown = false;
 
         ClearAllInputs();
 
@@ -35,7 +34,10 @@ public class TableManager : MonoBehaviour
 
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            OnTableButtonClick();
+        }
     }
 
     #region Public methods
@@ -46,12 +48,12 @@ public class TableManager : MonoBehaviour
         if (_isTableShown)
         {
             ShowTable();
-            _tableButtonText.text = "Скрыть таблицу";
+            _tableButtonText.text = "Показать таблицу (нажмите <b>[T]</b>)";
         }
         else
         {
             HideTable();
-            _tableButtonText.text = "Показать таблицу";
+            _tableButtonText.text = "Показать таблицу (нажмите <b>[T]</b>)";
         }
     }
 
@@ -131,6 +133,7 @@ public class TableManager : MonoBehaviour
 
         _tableMainCapacity.text = string.Empty;
     }
+
     #endregion
 
 }
