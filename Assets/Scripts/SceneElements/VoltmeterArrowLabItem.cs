@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VoltmeterArrowLabItem : NonFocusItem
+public class VoltmeterArrowLabItem : MonoBehaviour
 {
     private bool _isKeyLocked = false;
 
@@ -11,25 +11,10 @@ public class VoltmeterArrowLabItem : NonFocusItem
     private float _maxRotation = -48;
     private Tween _moveTween;
 
-    protected override void Awake()
+    void Awake()
     {
-        base.Awake();
-
         KeyLabItem.KeyChanged += OnKeyChanged;
         TableManager.VoltmeterValueChanged += OnVoltmeterValueChanged;
-    }
-
-    int temp = 0;
-
-    private void Update()
-    {
-
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            OnVoltmeterValueChanged(temp);
-
-            temp += 10;
-        }
     }
 
 

@@ -16,12 +16,17 @@ public class LabItemDropdown : MonoBehaviour
         InteractionManager.SelectedChanged += OnSelectedChangedHandler;
 
         _dropdown.onValueChanged.AddListener(OnValueChangedHandler);
+
+        FlyingCamera.FlyingCameraDisabled += (flag) =>
+        {
+            InteractionManager.Items.ForEach(item => _dropdown.options.Add(new TMP_Dropdown.OptionData(item.ItemName)));
+        };
     }
 
 
     private void Start()
     {
-        InteractionManager.Items.ForEach(item => _dropdown.options.Add(new TMP_Dropdown.OptionData(item.ItemName)));
+        //InteractionManager.Items.ForEach(item => _dropdown.options.Add(new TMP_Dropdown.OptionData(item.ItemName)));
     }
 
     private void OnIsFocusedChangedHandler(bool isFocused, IInteractable _)
