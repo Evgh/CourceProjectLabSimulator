@@ -60,7 +60,6 @@ public class FlyingCamera : MonoBehaviour
 
         return newPosition;
     }
-
     void Update()
     {
         //move Camera

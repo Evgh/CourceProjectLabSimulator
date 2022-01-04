@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using TMPro;
 
 public class MoveToObject : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public Camera Camera;
     [SerializeField] LabItem _currentItem;
+    [SerializeField] TMP_Text _tipsField;
+    [SerializeField] string _description;
 
     public GameObject targetObject;
     float speed = 0.01f;
@@ -23,11 +26,13 @@ public class MoveToObject : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     public void OnPointerEnter(PointerEventData eventData)
     {
         _currentItem.OnInteractStart();
+        _tipsField.text = _description;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         _currentItem.OnInteractStop();
+        _tipsField.text = string.Empty;
     }
 
     // Start is called before the first frame update
