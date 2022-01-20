@@ -1,5 +1,5 @@
 # Physics lab simulator created on Unity
-_Measuring capacitance of capacitors using Wheatston Bridge_
+_**Laboratory Topic is "Measuring capacitance of capacitors using Wheatston Bridge"**_
 
 At the beginning of the third year of university, I got acquainted with Unity technology and mastered its basics.
 
